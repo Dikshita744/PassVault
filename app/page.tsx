@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import dynamic from "next/dynamic"
+import { Canvas } from "@react-three/fiber"
+import { OrbitControls, Environment, Float, Text3D, Center } from "@react-three/drei"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -24,9 +25,45 @@ import { Copy, RefreshCw, Shield, Lock, Eye, EyeOff, Save, Database, LayoutDashb
 import { useToast } from "@/hooks/use-toast"
 import { savePassword, getPasswordStats, getCategories, type Category } from "@/lib/password-storage"
 import { PasswordDashboard } from "@/components/password-dashboard"
-import { ThemeToggle } from "@/components/theme-toggle"
 
-const DynamicThreeScene = dynamic(() => import("@/components/three-scene").then(m => m.ThreeScene), { ssr: false })
+// Password Strength Indicator Component
+function PasswordStrengthSphere({ strength }: { strength: number }) {
+  const getColor = (strength: number) => {
+    if (strength < 30) return "#ef4444" // red
+    if (strength < 60) return "#f59e0b" // amber
+    if (strength < 80) return "#10b981" // emerald
+    return "#059669" // dark emerald
+  }
+
+  return (
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+      <mesh>
+        <sphereGeometry args={[0.8, 32, 32]} />
+        <meshStandardMaterial
+          color={getColor(strength)}
+          metalness={0.7}
+          roughness={0.2}
+          emissive={getColor(strength)}
+          emissiveIntensity={0.1}
+        />
+      </mesh>
+    </Float>
+  )
+}
+
+// 3D Floating Lock Component
+function FloatingLock() {
+  return (
+    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.3}>
+      <Center>
+        <Text3D font="/fonts/Geist_Bold.json" size={0.5} height={0.1} curveSegments={12}>
+          🔒
+          <meshStandardMaterial color="#059669" metalness={0.8} roughness={0.2} />
+        </Text3D>
+      </Center>
+    </Float>
+  )
+}
 
 export default function PasswordGenerator() {
   const [password, setPassword] = useState("")
@@ -179,21 +216,37 @@ export default function PasswordGenerator() {
   }
 
   return (
-    <div className="min-h-screen bg-background transition-colors duration-300">
-      <DynamicThreeScene strength={strength} />
+    <div className="min-h-screen bg-background">
+      {/* 3D Background Scene */}
+      <div className="fixed inset-0 w-full h-full">
+        <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} intensity={1} />
+          <Environment preset="studio" />
+
+          {/* 3D Elements */}
+          <group position={[-3, 1, 0]}>
+            <FloatingLock />
+          </group>
+
+          <group position={[3, -1, 0]}>
+            <PasswordStrengthSphere strength={strength} />
+          </group>
+
+          <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
+        </Canvas>
+      </div>
 
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
+          {/* Header */}
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-3 mb-4 relative">
+            <div className="flex items-center justify-center gap-3 mb-4">
               <Shield className="h-8 w-8 text-primary" />
               <h1 className="text-4xl font-bold font-serif bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 SecurePass
               </h1>
-              <div className="absolute right-0 top-0">
-                <ThemeToggle />
-              </div>
             </div>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Generate ultra-secure passwords with our advanced interface. No login required - your passwords are
@@ -212,7 +265,8 @@ export default function PasswordGenerator() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            <Card className="backdrop-blur-sm bg-card/90 border-2 shadow-2xl transition-all duration-300 hover:shadow-3xl dark:shadow-emerald-500/10">
+            {/* Password Generator */}
+            <Card className="backdrop-blur-sm bg-card/80 border-2 shadow-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Lock className="h-5 w-5" />
@@ -354,7 +408,7 @@ export default function PasswordGenerator() {
             </Card>
 
             {/* Password Tips */}
-            <Card className="backdrop-blur-sm bg-card/90 border-2 shadow-2xl transition-all duration-300 hover:shadow-3xl dark:shadow-emerald-500/10">
+            <Card className="backdrop-blur-sm bg-card/80 border-2 shadow-2xl">
               <CardHeader>
                 <CardTitle>Security Tips</CardTitle>
                 <CardDescription>Best practices for password security</CardDescription>
@@ -383,12 +437,11 @@ export default function PasswordGenerator() {
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20 transition-colors duration-300">
+                <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
                   <h4 className="font-semibold text-primary mb-2">Cookie Storage</h4>
                   <p className="text-sm text-muted-foreground">
                     Your generated passwords are stored locally in browser cookies. No account required - access your
-                    passwords anytime as long as cookies remain intact. The interface automatically adapts to your
-                    preferred theme for optimal viewing in any lighting condition.
+                    passwords anytime as long as cookies remain intact.
                   </p>
                 </div>
               </CardContent>

@@ -498,22 +498,17 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
   }, [])
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-background to-muted/20">
-      <div className="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
-        {/* Header */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
-          <div className="flex-1 space-y-2">
-            <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Password Dashboard
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0">
-              Manage and organize your saved passwords with enterprise-grade security
-            </p>
-          </div>
-          <div className="flex items-center gap-3 flex-shrink-0">
+    <div className="max-w-6xl mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold font-serif">Password Dashboard</h2>
+          <p className="text-muted-foreground">Manage and organize your saved passwords</p>
+        </div>
+        <div className="flex items-center gap-2">
           <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
             <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline">
                 <Upload className="h-4 w-4 mr-2" />
                 Import
               </Button>
@@ -553,7 +548,7 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
           </Dialog>
           <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
             <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline">
                 <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
@@ -644,101 +639,66 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <Button 
-            variant="destructive" 
-            onClick={onClose}
-            size="sm"
-            className="bg-red-600 hover:bg-red-700 text-white font-medium shadow-sm hover:shadow-md transition-all duration-200 whitespace-nowrap"
-          >
+          <Button variant="outline" onClick={onClose}>
             Close Dashboard
           </Button>
         </div>
-        </div>
+      </div>
 
-        <Tabs defaultValue="overview" className="space-y-6 sm:space-y-8">
-          <div className="flex justify-center">
-            <TabsList className="grid grid-cols-2 sm:grid-cols-4 w-full max-w-2xl h-12 p-1 bg-muted/50 backdrop-blur-sm">
-              <TabsTrigger value="overview" className="text-sm font-medium py-2 transition-all">
-                Overview
-              </TabsTrigger>
-              <TabsTrigger value="passwords" className="text-sm font-medium py-2 transition-all">
-                Passwords
-              </TabsTrigger>
-              <TabsTrigger value="categories" className="text-sm font-medium py-2 transition-all">
-                Categories
-              </TabsTrigger>
-              <TabsTrigger value="analytics" className="text-sm font-medium py-2 transition-all">
-                Analytics
-              </TabsTrigger>
-            </TabsList>
-          </div>
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="passwords">All Passwords</TabsTrigger>
+          <TabsTrigger value="categories">Categories</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
 
-        <TabsContent value="overview" className="space-y-8">
+        <TabsContent value="overview" className="space-y-6">
           {/* Stats Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
-            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <div className="p-2 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <Shield className="h-5 w-5 text-primary" />
-                  </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Total</span>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-3xl font-bold">{stats.total}</p>
-                  <p className="text-sm text-muted-foreground font-medium">Total</p>
-                </div>
+                <p className="text-2xl font-bold">{stats.total}</p>
               </CardContent>
             </Card>
-            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <div className="p-2 rounded-full bg-red-100 dark:bg-red-900/20 group-hover:bg-red-200 dark:group-hover:bg-red-900/30 transition-colors">
-                    <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
-                  </div>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-red-500" />
+                  <span className="text-sm text-muted-foreground">Weak</span>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-3xl font-bold text-red-600 dark:text-red-400">{stats.weak}</p>
-                  <p className="text-sm text-muted-foreground font-medium">Weak</p>
-                </div>
+                <p className="text-2xl font-bold text-red-600">{stats.weak}</p>
               </CardContent>
             </Card>
-            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <div className="p-2 rounded-full bg-amber-100 dark:bg-amber-900/20 group-hover:bg-amber-200 dark:group-hover:bg-amber-900/30 transition-colors">
-                    <div className="h-5 w-5 rounded-full bg-amber-500" />
-                  </div>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 rounded-full bg-amber-500" />
+                  <span className="text-sm text-muted-foreground">Fair</span>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">{stats.fair}</p>
-                  <p className="text-sm text-muted-foreground font-medium">Fair</p>
-                </div>
+                <p className="text-2xl font-bold text-amber-600">{stats.fair}</p>
               </CardContent>
             </Card>
-            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <div className="p-2 rounded-full bg-emerald-100 dark:bg-emerald-900/20 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-900/30 transition-colors">
-                    <div className="h-5 w-5 rounded-full bg-emerald-500" />
-                  </div>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 rounded-full bg-emerald-500" />
+                  <span className="text-sm text-muted-foreground">Good</span>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{stats.good}</p>
-                  <p className="text-sm text-muted-foreground font-medium">Good</p>
-                </div>
+                <p className="text-2xl font-bold text-emerald-600">{stats.good}</p>
               </CardContent>
             </Card>
-            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <div className="p-2 rounded-full bg-emerald-100 dark:bg-emerald-900/20 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-900/30 transition-colors">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                  </div>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  <span className="text-sm text-muted-foreground">Strong</span>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-3xl font-bold text-emerald-700 dark:text-emerald-300">{stats.strong}</p>
-                  <p className="text-sm text-muted-foreground font-medium">Strong</p>
-                </div>
+                <p className="text-2xl font-bold text-emerald-700">{stats.strong}</p>
               </CardContent>
             </Card>
           </div>
@@ -1388,8 +1348,7 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
             </CardContent>
           </Card>
         </TabsContent>
-        </Tabs>
-      </div>
+      </Tabs>
     </div>
   )
 }
