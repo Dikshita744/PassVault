@@ -557,16 +557,15 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
       <div className="fixed top-0 left-0 right-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            {/* Theme Toggle and Title - Top Left */}
+            {/* Title - Top Left */}
             <div className="flex items-center gap-3 sm:gap-4">
-              <ThemeToggle />
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold font-serif">Password Dashboard</h2>
                 <p className="text-xs sm:text-sm text-muted-foreground">Manage and organize your saved passwords</p>
               </div>
             </div>
             
-            {/* Action Buttons - Top Right */}
+            {/* Action Buttons and Theme Toggle - Top Right */}
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <div className="flex items-center gap-2 flex-1 sm:flex-initial">
                 <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
@@ -707,6 +706,8 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
                   <span className="text-xs sm:text-sm">Close</span>
                 </Button>
               </div>
+              {/* Theme Toggle - Top Right */}
+              <ThemeToggle />
             </div>
           </div>
         </div>
