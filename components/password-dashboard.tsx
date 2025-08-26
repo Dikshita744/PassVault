@@ -553,6 +553,11 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Fixed Theme Toggle - Top Right Corner */}
+      <div className="fixed top-4 right-4 z-40">
+        <ThemeToggle />
+      </div>
+
       {/* Fixed Top Navigation Bar */}
       <div className="fixed top-0 left-0 right-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
@@ -565,7 +570,7 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
               </div>
             </div>
             
-            {/* Action Buttons and Theme Toggle - Top Right */}
+            {/* Action Buttons - Top Right */}
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <div className="flex items-center gap-2 flex-1 sm:flex-initial">
                 <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
@@ -706,8 +711,6 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
                   <span className="text-xs sm:text-sm">Close</span>
                 </Button>
               </div>
-              {/* Theme Toggle - Top Right */}
-              <ThemeToggle />
             </div>
           </div>
         </div>
