@@ -646,7 +646,7 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
             </DialogContent>
           </Dialog>
           <Button variant="outline" onClick={onClose}>
-            Close Dashboard
+            Close
           </Button>
         </div>
       </div>
