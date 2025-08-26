@@ -49,6 +49,7 @@ import {
   ArrowRight,
   Sparkles,
   Lock,
+  X,
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import {
@@ -702,6 +703,7 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
             </DialogContent>
           </Dialog>
                 <Button variant="outline" size="sm" onClick={onClose} className="flex-1 sm:flex-initial">
+                  <X className="h-3 w-3 mr-1 sm:mr-2" />
                   <span className="text-xs sm:text-sm">Close</span>
                 </Button>
               </div>
