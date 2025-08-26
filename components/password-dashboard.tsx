@@ -46,6 +46,9 @@ import {
   Plus,
   Edit,
   Tag,
+  ArrowRight,
+  Sparkles,
+  Lock,
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import {
@@ -74,6 +77,47 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 interface PasswordDashboardProps {
   onClose: () => void
+}
+
+// Empty State Component
+function EmptyStateSection({ onGeneratePassword }: { onGeneratePassword: () => void }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+      <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+        <Lock className="w-12 h-12 text-primary" />
+      </div>
+      
+      <h3 className="text-2xl font-bold mb-3">Welcome to SecurePass!</h3>
+      <p className="text-lg text-foreground mb-2 max-w-md">
+        Start building your secure password vault
+      </p>
+      <p className="text-muted-foreground mb-8 max-w-lg">
+        Generate strong, unique passwords and organize them with categories. Your passwords are stored locally and securely.
+      </p>
+      
+      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+        <Button 
+          onClick={onGeneratePassword} 
+          size="lg" 
+          className="flex-1 text-lg py-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+        >
+          <Sparkles className="w-5 h-5 mr-2" />
+          Generate Your First Password
+          <ArrowRight className="w-5 h-5 ml-2" />
+        </Button>
+      </div>
+      
+      <div className="mt-8 p-4 bg-muted/50 rounded-lg border border-muted max-w-lg">
+        <div className="flex items-center gap-2 mb-2">
+          <Shield className="w-4 h-4 text-primary" />
+          <span className="font-medium text-sm">Privacy First</span>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          No account required. All passwords are stored locally in your browser for instant access and complete privacy.
+        </p>
+      </div>
+    </div>
+  )
 }
 
 export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
@@ -107,6 +151,14 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
     strong: 0,
   })
   const { toast } = useToast()
+
+  const handleGeneratePassword = () => {
+    onClose() // Return to main password generator
+    toast({
+      title: "Let's generate your first password!",
+      description: "Redirecting to the password generator...",
+    })
+  }
 
   const loadData = () => {
     const storedPasswords = getStoredPasswords()
@@ -499,26 +551,30 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
   }, [])
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
-      {/* Theme Toggle */}
-      <div className="fixed top-4 right-4 z-20">
-        <ThemeToggle />
-      </div>
-
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-bold font-serif">Password Dashboard</h2>
-          <p className="text-muted-foreground">Manage and organize your saved passwords</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
-            <DialogTrigger asChild>
-              <Button variant="outline">
-                <Upload className="h-4 w-4 mr-2" />
-                Import
-              </Button>
-            </DialogTrigger>
+    <div className="min-h-screen bg-background">
+      {/* Fixed Top Navigation Bar */}
+      <div className="fixed top-0 left-0 right-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            {/* Theme Toggle and Title - Top Left */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              <ThemeToggle />
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold font-serif">Password Dashboard</h2>
+                <p className="text-xs sm:text-sm text-muted-foreground">Manage and organize your saved passwords</p>
+              </div>
+            </div>
+            
+            {/* Action Buttons - Top Right */}
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="flex items-center gap-2 flex-1 sm:flex-initial">
+                <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="flex-1 sm:flex-initial">
+                      <Upload className="h-3 w-3 mr-1 sm:mr-2" />
+                      <span className="text-xs sm:text-sm">Import</span>
+                    </Button>
+                  </DialogTrigger>
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Import Passwords</DialogTitle>
@@ -552,13 +608,13 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
-            <DialogTrigger asChild>
-              <Button variant="outline">
-                <Download className="h-4 w-4 mr-2" />
-                Export
-              </Button>
-            </DialogTrigger>
+                <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="flex-1 sm:flex-initial">
+                      <Download className="h-3 w-3 mr-1 sm:mr-2" />
+                      <span className="text-xs sm:text-sm">Export</span>
+                    </Button>
+                  </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Export Passwords</DialogTitle>
@@ -645,23 +701,43 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <Button variant="outline" onClick={onClose}>
-            Close
-          </Button>
+                <Button variant="outline" size="sm" onClick={onClose} className="flex-1 sm:flex-initial">
+                  <span className="text-xs sm:text-sm">Close</span>
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="passwords">All Passwords</TabsTrigger>
-          <TabsTrigger value="categories">Categories</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-        </TabsList>
+      {/* Main Content with Top Padding */}
+      <div className="pt-32 sm:pt-28 pb-8 max-w-6xl mx-auto px-4 sm:px-6 space-y-6">
+        <Tabs defaultValue="overview" className="space-y-8">
+          <div className="sticky top-[88px] sm:top-[80px] z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-3 sm:py-4 -mx-4 sm:-mx-6 px-4 sm:px-6 border-b">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto p-1">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm py-2.5 px-2">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="passwords" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm py-2.5 px-2">
+                <span className="hidden sm:inline">All </span>Passwords
+              </TabsTrigger>
+              <TabsTrigger value="categories" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm py-2.5 px-2">
+                Categories
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs sm:text-sm py-2.5 px-2">
+                Analytics
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
         <TabsContent value="overview" className="space-y-6">
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {stats.total === 0 ? (
+            // Empty State
+            <EmptyStateSection onGeneratePassword={handleGeneratePassword} />
+          ) : (
+            <>
+              {/* Stats Cards */}
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
@@ -798,6 +874,8 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
               </div>
             </CardContent>
           </Card>
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="passwords" className="space-y-6">
@@ -1042,8 +1120,100 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
         </TabsContent>
 
         <TabsContent value="categories" className="space-y-6">
-          {/* Category Management */}
-          <Card>
+          {categories.length === 0 ? (
+            <Card>
+              <CardContent className="p-8">
+                <div className="text-center">
+                  <Tag className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" />
+                  <h3 className="text-xl font-semibold mb-2">No Categories Yet</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Create categories to organize your passwords by type, purpose, or importance
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button onClick={handleGeneratePassword} variant="outline">
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Generate Password First
+                    </Button>
+                    <Dialog open={showCategoryDialog} onOpenChange={setShowCategoryDialog}>
+                      <DialogTrigger asChild>
+                        <Button onClick={() => setShowCategoryDialog(true)}>
+                          <Plus className="w-4 h-4 mr-2" />
+                          Create Category
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Add New Category</DialogTitle>
+                          <DialogDescription>
+                            Create a new category to organize your passwords
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="category-name">Category Name</Label>
+                            <Input
+                              id="category-name"
+                              placeholder="e.g., Work, Personal, Banking..."
+                              value={newCategory.name}
+                              onChange={(e) => setNewCategory((prev) => ({ ...prev, name: e.target.value }))}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="category-icon">Icon</Label>
+                            <Input
+                              id="category-icon"
+                              placeholder="📁"
+                              value={newCategory.icon}
+                              onChange={(e) => setNewCategory((prev) => ({ ...prev, icon: e.target.value }))}
+                              maxLength={2}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="category-color">Color</Label>
+                            <div className="flex items-center gap-2">
+                              <Input
+                                id="category-color"
+                                type="color"
+                                value={newCategory.color}
+                                onChange={(e) => setNewCategory((prev) => ({ ...prev, color: e.target.value }))}
+                                className="w-16 h-10"
+                              />
+                              <Input
+                                value={newCategory.color}
+                                onChange={(e) => setNewCategory((prev) => ({ ...prev, color: e.target.value }))}
+                                placeholder="#10b981"
+                              />
+                            </div>
+                          </div>
+                          <div className="p-3 border rounded-lg">
+                            <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                            <Badge
+                              variant="outline"
+                              style={{ backgroundColor: `${newCategory.color}20`, borderColor: newCategory.color }}
+                            >
+                              <span className="mr-1">{newCategory.icon}</span>
+                              {newCategory.name || "Category Name"}
+                            </Badge>
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button variant="outline" onClick={() => setShowCategoryDialog(false)}>
+                            Cancel
+                          </Button>
+                          <Button onClick={handleAddCategory}>
+                            Add Category
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              {/* Category Management */}
+              <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -1129,11 +1299,16 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {categories.map((category) => (
-                  <Card key={category.id} className="p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg">{category.icon}</span>
-                        <h4 className="font-medium">{category.name}</h4>
+                  <Card key={category.id} className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${category.color}20`, border: `1px solid ${category.color}` }}>
+                          <span className="text-lg">{category.icon}</span>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-base">{category.name}</h4>
+                          <div className="text-xs text-muted-foreground mt-1">Created {getPasswordAge(category.createdAt)}</div>
+                        </div>
                       </div>
                       <div className="flex items-center gap-1">
                         <Button variant="ghost" size="sm" onClick={() => openEditCategory(category)}>
@@ -1148,15 +1323,20 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
                         </Button>
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <Badge
-                        variant="outline"
-                        style={{ backgroundColor: `${category.color}20`, borderColor: category.color }}
-                      >
-                        {categoryStats[category.name]?.total || 0} passwords
-                      </Badge>
-                      <div className="text-xs text-muted-foreground">Created {getPasswordAge(category.createdAt)}</div>
-                      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Badge
+                          variant="outline"
+                          style={{ backgroundColor: `${category.color}20`, borderColor: category.color }}
+                          className="px-3 py-1"
+                        >
+                          {categoryStats[category.name]?.total || 0} passwords
+                        </Badge>
+                        <span className="text-sm font-medium text-muted-foreground">
+                          {categoryStats[category.name]?.strong || 0} strong
+                        </span>
+                      </div>
+                      <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                         <div
                           className="h-full transition-all duration-300"
                           style={{
@@ -1165,20 +1345,37 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
                           }}
                         />
                       </div>
-                      <div className="text-xs text-muted-foreground">
-                        {categoryStats[category.name]?.strong || 0} strong passwords
-                      </div>
                     </div>
                   </Card>
                 ))}
               </div>
             </CardContent>
           </Card>
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-6">
-          {/* Security Score */}
-          <Card>
+          {stats.total === 0 ? (
+            <Card>
+              <CardContent className="p-8">
+                <div className="text-center">
+                  <BarChart3 className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" />
+                  <h3 className="text-xl font-semibold mb-2">No Analytics Yet</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Save some passwords to see detailed security analytics and insights
+                  </p>
+                  <Button onClick={handleGeneratePassword} variant="outline">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Get Started
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              {/* Security Score */}
+              <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="h-5 w-5" />
@@ -1353,8 +1550,11 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
               </div>
             </CardContent>
           </Card>
+            </>
+          )}
         </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
     </div>
   )
 }
