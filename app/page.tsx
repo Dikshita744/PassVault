@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Canvas } from "@react-three/fiber"
-import { OrbitControls, Environment, Float, Text3D, Center } from "@react-three/drei"
+import { OrbitControls, Environment, Float, Center } from "@react-three/drei"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -56,10 +56,18 @@ function FloatingLock() {
   return (
     <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.3}>
       <Center>
-        <Text3D font="/fonts/Geist_Bold.json" size={0.5} height={0.1} curveSegments={12}>
-          🔒
-          <meshStandardMaterial color="#059669" metalness={0.8} roughness={0.2} />
-        </Text3D>
+        {/* Simple 3D Lock using basic geometry instead of Text3D */}
+        <group>
+          <mesh position={[0, 0, 0]}>
+            <boxGeometry args={[0.8, 0.6, 0.2]} />
+            <meshStandardMaterial color="#059669" metalness={0.8} roughness={0.2} />
+          </mesh>
+          {/* Lock shackle */}
+          <mesh position={[0, 0.4, 0]}>
+            <torusGeometry args={[0.2, 0.05, 8, 16, Math.PI]} />
+            <meshStandardMaterial color="#059669" metalness={0.8} roughness={0.2} />
+          </mesh>
+        </group>
       </Center>
     </Float>
   )
