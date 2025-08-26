@@ -25,6 +25,7 @@ import { Copy, RefreshCw, Shield, Lock, Eye, EyeOff, Save, Database, LayoutDashb
 import { useToast } from "@/hooks/use-toast"
 import { savePassword, getPasswordStats, getCategories, type Category } from "@/lib/password-storage"
 import { PasswordDashboard } from "@/components/password-dashboard"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 // 3D Password Strength Indicator Component
 function PasswordStrengthSphere({ strength }: { strength: number }) {
@@ -243,6 +244,11 @@ export default function PasswordGenerator() {
 
           <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
         </Canvas>
+      </div>
+
+      {/* Theme Toggle */}
+      <div className="fixed top-4 right-4 z-20">
+        <ThemeToggle />
       </div>
 
       {/* Main Content */}

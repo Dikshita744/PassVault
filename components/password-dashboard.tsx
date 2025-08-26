@@ -70,6 +70,7 @@ import {
   type Category,
   type CategoryStats,
 } from "@/lib/password-storage"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 interface PasswordDashboardProps {
   onClose: () => void
@@ -499,6 +500,11 @@ export function PasswordDashboard({ onClose }: PasswordDashboardProps) {
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
+      {/* Theme Toggle */}
+      <div className="fixed top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
