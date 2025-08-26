@@ -26,7 +26,7 @@ import { useToast } from "@/hooks/use-toast"
 import { savePassword, getPasswordStats, getCategories, type Category } from "@/lib/password-storage"
 import { PasswordDashboard } from "@/components/password-dashboard"
 
-// Password Strength Indicator Component
+// 3D Password Strength Indicator Component
 function PasswordStrengthSphere({ strength }: { strength: number }) {
   const getColor = (strength: number) => {
     if (strength < 30) return "#ef4444" // red
