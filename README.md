@@ -1,4 +1,4 @@
-# SecurePass 🔐  
+# PassVault 🔐  
 **A zero-backend, privacy-first password generator you can host anywhere.**
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=flat-square)](https://pass.therayyanawaz.co.in/)
@@ -18,7 +18,7 @@
 ## 🚀 Quick Start (local)
 1. **Clone**
    ```bash
-   git clone https://github.com/therayyanawaz/SecurePass.git
+   git clone https://github.com/Dikshita744/PassVault.git
    cd SecurePass
    ```
 
@@ -119,10 +119,6 @@
 - [ ] **Biometric Auth** - WebAuthn for secure vault access
 - [ ] **Browser Extension** - Auto-fill integration
 
----
-
-## 📄 License
-MIT © 2025 [Md Rayyan Nawaz](https://github.com/therayyanawaz) – see [LICENSE](./LICENSE).
 
 ---
 
@@ -133,9 +129,9 @@ This is a **JAMstack application** built with:
 - **Edge deployment** compatible (Vercel, Netlify, Cloudflare)
 - **Zero runtime dependencies** - pure client-side execution
 
-## 👨‍💻 Authors & Contributors
+## 👨‍💻 Contributors
 
-- **[@therayyanawaz](https://www.github.com/therayyanawaz)** - Creator & Lead Developer
+- **[@Dikshita744](https://www.github.com/Dikshita744)**
 
 ---
 
