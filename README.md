@@ -4,7 +4,7 @@ Privacy-first password generator and local vault built with Next.js.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](./LICENSE)
 
-SecurePass runs entirely in the browser. You can generate passwords, save them locally, organize them with categories, export backups, and install the app as a PWA with offline support for cached pages and assets.
+PassVault runs entirely in the browser. You can generate passwords, save them locally, organize them with categories, export backups, and install the app as a PWA with offline support for cached pages and assets.
 
 ## Features
 
