@@ -1,4 +1,4 @@
-# SecurePass
+# PassVault
 
 Privacy-first password generator and local vault built with Next.js.
 
